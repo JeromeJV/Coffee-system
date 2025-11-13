@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe POS System</title>
+    <link rel="stylesheet" href="hatdog.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Role Selection -->
+        <div class="role-selection" id="roleSelection">
+            <h1 class="system-name">CAFE POS SYSTEM</h1>
+            <p>Please select your role to continue</p>
+            <div class="role-buttons">
+                <button class="role-btn" id="cashierBtn">
+                    <i class="fas fa-cash-register"></i>
+                    Cashier
+                </button>
+                <button class="role-btn" id="ownerBtn">
+                    <i class="fas fa-user-tie"></i>
+                    Owner
+                </button>
+            </div>
+        </div>
+
+        <!-- Cashier Login -->
+        <div class="login-container" id="cashierLogin">
+            <div class="login-box">
+                <button class="back-btn" id="backFromCashier">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <h1 class="system-name" style="color: var(--accent); text-align: center; margin-bottom: 20px;">CASHIER LOGIN</h1>
+                <form id="cashierLoginForm">
+                    <div class="form-group">
+                        <label for="cashierName">USER NAME:</label>
+                        <input type="text" id="cashierName" placeholder="Enter any username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cashierPassword">PASSWORD:</label>
+                        <input type="password" id="cashierPassword" placeholder="Enter any password">
+                    </div>
+                    
+                    <button type="submit" class="login-btn">LOGIN AS CASHIER</button>
+                </form>
+                <p style="text-align: center; margin-top: 15px; color: var(--text-light); font-size: 0.9rem;">
+                    <i class="fas fa-info-circle"></i> You can use any username and password for testing
+                </p>
+            </div>
+        </div>
+
+        <!-- Owner Login -->
+        <div class="login-container" id="ownerLogin">
+            <div class="login-box">
+                <button class="back-btn" id="backFromOwner">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <h1 class="system-name" style="color: var(--accent); text-align: center; margin-bottom: 20px;">OWNER LOGIN</h1>
+                <form id="ownerLoginForm">
+                    <div class="form-group">
+                        <label for="ownerName">USER NAME:</label>
+                        <input type="text" id="ownerName" placeholder="Enter any username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ownerPassword">PASSWORD:</label>
+                        <input type="password" id="ownerPassword" placeholder="Enter any password">
+                    </div>
+                    
+                    <button type="submit" class="login-btn">LOGIN AS OWNER</button>
+                </form>
+                <p style="text-align: center; margin-top: 15px; color: var(--text-light); font-size: 0.9rem;">
+                    <i class="fas fa-info-circle"></i> You can use any username and password for testing
+                </p>
+            </div>
+        </div>
+
+        <!-- POS System (Cashier View) -->
+        <div class="pos-container" id="posSystem">
+            <div class="header">
+                <h1>Cafe POS - Cashier</h1>
+                <div class="user-info">
+                    <span>Welcome, <span id="displayCashierName">Cashier</span></span>
+                    <button class="btn btn-primary" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+            
+            <div class="content">
+                <div class="menu-section">
+                    <div class="category-tabs">
+                        <div class="category-tab active" data-category="drinks">Drinks</div>
+                        <div class="category-tab" data-category="foods">Foods</div>
+                        <div class="category-tab" data-category="sales-history">My Sales</div>
+                    </div>
+
+                    <div class="menu-grid" id="menuGrid">
+                        <!-- Menu items will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Sales History Section for Cashier -->
+                    <div class="sales-history" id="cashierSalesHistory" style="display: none;">
+                        <h3><i class="fas fa-chart-line"></i> My Sales History</h3>
+                        
+                        <div class="sales-stats">
+                            <div class="stat-card">
+                                <h4>Today's Sales</h4>
+                                <div class="value" id="cashierTodaySales">P0</div>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Today's Orders</h4>
+                                <div class="value" id="cashierTodayOrders">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Average Order</h4>
+                                <div class="value" id="cashierAvgOrder">P0</div>
+                            </div>
+                        </div>
+                        
+                        <div class="sales-filters">
+                            <div class="filter-group">
+                                <label for="cashierDateFilter">Date Range</label>
+                                <select id="cashierDateFilter">
+                                    <option value="today">Today</option>
+                                    <option value="week">This Week</option>
+                                    <option value="month">This Month</option>
+                                    <option value="all">All Time</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Date & Time</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Payment Method</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cashierSalesTable">
+                                <!-- Cashier sales will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="cart-section">
+                    <h2 class="cart-title">CART</h2>
+                    <div class="cart-items" id="cartItems">
+                        <div class="empty-cart">Your cart is empty</div>
+                    </div>
+                    
+                    <div class="cart-summary">
+                        <div class="summary-row">
+                            <span>Total Price:</span>
+                            <span id="totalPrice">P0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Exchange:</span>
+                            <span id="exchangeAmount">P0</span>
+                        </div>
+                        <div class="summary-row summary-total">
+                            <span>Amount Due:</span>
+                            <span id="amountDue">P0</span>
+                        </div>
+                        
+                        <button class="checkout-btn" id="checkoutBtn">CHECKOUT</button>
+                    </div>
+                    <!-- Popup Modal -->
+                    <div id="popupModal" class="popup-modal">
+                        <div class="popup-content">
+                            <button id="closePopupModal" class="close-popup">&times;</button>
+                            <h3 id="popupTitle">Title</h3>
+                            <p id="popupMessage">Message</p>
+                            <div class="popup-buttons">
+                                <button id="popupOkBtn" class="popup-ok-btn">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Owner Dashboard -->
+        <div class="owner-dashboard" id="ownerDashboard">
+            <div class="header">
+                <h1>Cafe POS - Owner Dashboard</h1>
+                <div class="user-info">
+                    <span>Welcome, <span id="displayOwnerName">Owner</span></span>
+                    <button class="btn btn-primary" id="ownerLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+            
+            <div class="dashboard-content">
+                <div class="sidebar">
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="active" data-section="overview"><i class="fas fa-tachometer-alt"></i> Overview</a></li>
+                        <li><a href="#" data-section="sales-history"><i class="fas fa-chart-line"></i> Sales History</a></li>
+                        <li><a href="#" data-section="ingredients"><i class="fas fa-boxes"></i> Ingredients Stock</a></li>
+                        <li><a href="#" data-section="cashiers"><i class="fas fa-users"></i> Cashiers</a></li>
+                        <li><a href="#" data-section="item-menu"><i class="fas fa-list"></i> Item Menu</a></li>
+                    </ul>
+                </div>
+                
+                <div class="main-content">
+                    <!-- Overview Section -->
+                    <div class="content-section active" id="overview">
+                        <h2 class="section-title">Business Overview</h2>
+                        <div class="dashboard-cards">
+                            <div class="dashboard-card">
+                                <h3><i class="fas fa-money-bill-wave"></i> Today's Revenue</h3>
+                                <div class="value" id="todayRevenue">P5,430</div>
+                            </div>
+                            <div class="dashboard-card">
+                                <h3><i class="fas fa-shopping-cart"></i> Today's Orders</h3>
+                                <div class="value" id="todayOrders">24</div>
+                            </div>
+                            <div class="dashboard-card">
+                                <h3><i class="fas fa-users"></i> Active Cashiers</h3>
+                                <div class="value" id="activeCashiers">3</div>
+                            </div>
+                            <div class="dashboard-card">
+                                <h3><i class="fas fa-chart-line"></i> Monthly Growth</h3>
+                                <div class="value" id="monthlyGrowth">+12%</div>
+                            </div>
+                        </div>
+                        
+                        <h3 style="margin-top: 20px;">Recent Orders</h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Cashier</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Time</th>
+                                    <th>Payment Method</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentOrders">
+                                <!-- Recent orders will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Sales History Section -->
+                    <div class="content-section" id="sales-history">
+                        <h2 class="section-title">Sales History</h2>
+                        
+                        <div class="sales-stats">
+                            <div class="stat-card">
+                                <h4>Total Revenue</h4>
+                                <div class="value" id="totalRevenue">P45,680</div>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Total Orders</h4>
+                                <div class="value" id="totalOrders">189</div>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Average Order</h4>
+                                <div class="value" id="avgOrder">P242</div>
+                            </div>
+                            <div class="stat-card">
+                                <h4>Best Cashier</h4>
+                                <div class="value" id="bestCashier">Bernard</div>
+                            </div>
+                        </div>
+                        
+                        <div class="sales-filters">
+                            <div class="filter-group">
+                                <label for="dateFilter">Date Range</label>
+                                <select id="dateFilter">
+                                    <option value="today">Today</option>
+                                    <option value="week">This Week</option>
+                                    <option value="month">This Month</option>
+                                    <option value="all">All Time</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="cashierFilter">Cashier</label>
+                                <select id="cashierFilter">
+                                    <option value="all">All Cashiers</option>
+                                    <!-- Cashier options will be populated by JavaScript -->
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="paymentFilter">Payment Method</label>
+                                <select id="paymentFilter">
+                                    <option value="all">All Methods</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="gcash">GCash</option>
+                                    <option value="paymaya">PayMaya</option>
+                                    <option value="visa">Visa</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Cashier</th>
+                                    <th>Date & Time</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Payment Method</th>
+                                </tr>
+                            </thead>
+                            <tbody id="salesHistoryTable">
+                                <!-- Sales history will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Ingredients Stock Section -->
+                    <div class="content-section" id="ingredients">
+                        <h2 class="section-title">Ingredients Stock Management</h2>
+                        
+                        <div style="background: #f8f9fa; border-radius: var(--radius); padding: 20px; margin-bottom: 20px; border: 1px solid #e9ecef;">
+                            <h3>Add New Ingredient</h3>
+                            <div class="form-row">
+                                <div class="form-group-half">
+                                    <label for="ingredientName">Ingredient Name</label>
+                                    <input type="text" id="ingredientName" placeholder="Enter ingredient name">
+                                </div>
+                                <div class="form-group-half">
+                                    <label for="ingredientQuantity">Quantity</label>
+                                    <input type="number" id="ingredientQuantity" placeholder="Enter quantity">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group-half">
+                                    <label for="ingredientUnit">Unit</label>
+                                    <select id="ingredientUnit">
+                                        <option value="">Select Unit</option>
+                                        <option value="kg">kg</option>
+                                        <option value="liters">liters</option>
+                                        <option value="pieces">pieces</option>
+                                        <option value="slices">slices</option>
+                                        <option value="heads">heads</option>
+                                    </select>
+                                </div>
+                                <div class="form-group-half">
+                                    <label for="ingredientStatus">Status</label>
+                                    <select id="ingredientStatus">
+                                        <option value="In Stock">In Stock</option>
+                                        <option value="Low Stock">Low Stock</option>
+                                        <option value="Out of Stock">Out of Stock</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn-success" id="saveIngredient">
+                                    <i class="fas fa-plus"></i> Add Ingredient
+                                </button>
+                                <button class="btn-secondary" id="clearIngredientForm">
+                                    <i class="fas fa-times"></i> Clear Form
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Ingredient Name</th>
+                                    <th>Quantity</th>
+                                    <th>Unit</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ingredientsStockTable">
+                                <!-- Ingredients will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Cashiers Section -->
+                    <div class="content-section" id="cashiers">
+                        <h2 class="section-title">Cashier Management</h2>
+                        
+                        <div style="background: #f8f9fa; border-radius: var(--radius); padding: 20px; margin-bottom: 20px; border: 1px solid #e9ecef;">
+                            <h3>Add New Cashier</h3>
+                            <div class="form-row">
+                                <div class="form-group-half">
+                                    <label for="newCashierName">Cashier Name</label>
+                                    <input type="text" id="newCashierName" placeholder="Enter cashier name">
+                                </div>
+                                <div class="form-group-half">
+                                    <label for="newCashierIdNumber">ID Number</label>
+                                    <input type="text" id="newCashierIdNumber" placeholder="Enter ID number">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group-half">
+                                    <label for="newCashierUsername">Username</label>
+                                    <input type="text" id="newCashierUsername" placeholder="Enter username">
+                                </div>
+                                <div class="form-group-half">
+                                    <label for="newCashierPassword">Password</label>
+                                    <input type="password" id="newCashierPassword" placeholder="Enter password">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn-success" id="saveCashier">
+                                    <i class="fas fa-plus"></i> Add Cashier
+                                </button>
+                                <button class="btn-secondary" id="clearCashierForm">
+                                    <i class="fas fa-times"></i> Clear Form
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <h3>Cashier List</h3>
+                        <div id="cashiersList">
+                            <!-- Cashiers will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Item Menu Section -->
+                    <div class="content-section" id="item-menu">
+                        <h2 class="section-title">Item Menu Management</h2>
+                        
+                        <div style="background: #f8f9fa; border-radius: var(--radius); padding: 20px; margin-bottom: 20px; border: 1px solid #e9ecef;">
+                            <h3>Add New Item</h3>
+                            <div class="form-row">
+                                <div class="form-group-half">
+                                    <label for="newItemName">Item Name</label>
+                                    <input type="text" id="newItemName" placeholder="Enter item name">
+                                </div>
+                                <div class="form-group-half">
+                                    <label for="newItemPrice">Price</label>
+                                    <input type="number" id="newItemPrice" placeholder="Enter price">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group-half">
+                                    <label for="newItemCategory">Category</label>
+                                    <select id="newItemCategory">
+                                        <option value="drinks">Drinks</option>
+                                        <option value="foods">Foods</option>
+                                        <option value="pastries">Pastries</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn-success" id="saveItem">
+                                    <i class="fas fa-plus"></i> Add Item
+                                </button>
+                                <button class="btn-secondary" id="clearItemForm">
+                                    <i class="fas fa-times"></i> Clear Form
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <h3>Current Menu</h3>
+                        <div id="menuList">
+                            <!-- Menu items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Modal -->
+        <div class="modal-overlay" id="paymentModal">
+            <div class="payment-modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Select Payment Method</h2>
+                    <button class="close-btn" id="closePaymentModal">&times;</button>
+                </div>
+                
+                <div class="payment-methods" id="paymentMethods">
+                    <div class="payment-method" data-method="cash">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h3>Cash</h3>
+                        <p>Pay with cash</p>
+                    </div>
+                    <div class="payment-method" data-method="gcash">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>GCash</h3>
+                        <p>Pay via GCash</p>
+                    </div>
+                    <div class="payment-method" data-method="paymaya">
+                        <i class="fas fa-wallet"></i>
+                        <h3>PayMaya</h3>
+                        <p>Pay via PayMaya</p>
+                    </div>
+                    <div class="payment-method" data-method="visa">
+                        <i class="fas fa-credit-card"></i>
+                        <h3>Visa</h3>
+                        <p>Pay with Visa card</p>
+                    </div>
+                </div>
+                
+                <div class="payment-details" id="cashDetails">
+                    <h3>Cash Payment</h3>
+                    <div class="form-group">
+                        <label for="cashAmount">Amount Received:</label>
+                        <input type="number" id="cashAmount" placeholder="Enter cash amount">
+                    </div>
+                    <div class="summary-row">
+                        <span>Change:</span>
+                        <span id="changeAmount">P0</span>
+                    </div>
+                </div>
+                
+                <div class="payment-details" id="gcashDetails">
+                    <h3>GCash Payment</h3>
+                    <div class="form-group">
+                        <label for="gcashNumber">GCash Number:</label>
+                        <input type="text" id="gcashNumber" placeholder="Enter GCash number">
+                    </div>
+                    <div class="form-group">
+                        <label for="gcashReference">Reference Number:</label>
+                        <input type="text" id="gcashReference" placeholder="Enter reference number">
+                    </div>
+                </div>
+                
+                <div class="payment-details" id="paymayaDetails">
+                    <h3>PayMaya Payment</h3>
+                    <div class="form-group">
+                        <label for="paymayaNumber">PayMaya Number:</label>
+                        <input type="text" id="paymayaNumber" placeholder="Enter PayMaya number">
+                    </div>
+                    <div class="form-group">
+                        <label for="paymayaReference">Reference Number:</label>
+                        <input type="text" id="paymayaReference" placeholder="Enter reference number">
+                    </div>
+                </div>
+                
+                <div class="payment-details" id="visaDetails">
+                    <h3>Visa Card Payment</h3>
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number:</label>
+                        <input type="text" id="cardNumber" placeholder="Enter card number">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group-half">
+                            <label for="expiryDate">Expiry Date:</label>
+                            <input type="text" id="expiryDate" placeholder="MM/YY">
+                        </div>
+                        <div class="form-group-half">
+                            <label for="cvv">CVV:</label>
+                            <input type="text" id="cvv" placeholder="CVV">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="payment-actions">
+                    <button class="confirm-payment-btn" id="confirmPaymentBtn">
+                        <i class="fas fa-check"></i> Confirm Payment
+                    </button>
+                    <button class="cancel-payment-btn" id="cancelPaymentBtn">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Receipt Modal -->
+        <div class="modal-overlay" id="receiptModal">
+            <div class="receipt-modal">
+                <div class="modal-header">
+                    <h2 class="modal-title">Order Receipt</h2>
+                    <button class="close-btn" id="closeReceiptModal">&times;</button>
+                </div>
+                
+                <div class="receipt" id="receiptContent">
+                    <div class="receipt-header">
+                        <div class="receipt-title">CAFE POS SYSTEM</div>
+                        <div class="receipt-subtitle">Order Receipt</div>
+                        <div class="receipt-subtitle" id="receiptDate"></div>
+                        <div class="receipt-subtitle" id="receiptOrderId"></div>
+                        <div class="receipt-subtitle" id="receiptPaymentMethod"></div>
+                        <div class="receipt-subtitle" id="receiptCashier"></div>
+                    </div>
+                    <div class="receipt-body" id="receiptBody">
+                        <!-- Receipt items will be populated by JavaScript -->
+                    </div>
+                    <div class="receipt-total">
+                        <span>TOTAL:</span>
+                        <span id="receiptTotal">P0</span>
+                    </div>
+                    <div class="receipt-change" id="receiptChangeContainer">
+                        <span>CHANGE:</span>
+                        <span id="receiptChange">P0</span>
+                    </div>
+                    <div class="receipt-footer">
+                        <div>Thank you for your purchase!</div>
+                        <div>Please come again</div>
+                    </div>
+                </div>
+                
+                <!-- Receipt Actions -->
+                <div class="receipt-actions no-print">
+                    <button class="print-btn" id="printReceiptBtn">
+                        <i class="fas fa-print"></i> Print Receipt
+                    </button>
+                    <button class="done-btn" id="doneReceiptBtn">
+                        <i class="fas fa-check"></i> Done
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Popup -->
+    <div id="logoutPopup" class="logout-popup-overlay">
+        <div class="logout-popup-content">
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to logout?</p>
+            <div class="logout-popup-buttons">
+                <button id="logoutConfirmBtn" class="logout-confirm-btn">Yes, Logout</button>
+                <button id="logoutCancelBtn" class="logout-cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="halaman.js"></script>
+</body>
+</html>
